@@ -1,0 +1,112 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+
+<div class="fixed-home-bg">
+
+    <div class="p-3 text-light" style="background-color:#343a408c; width: 100%;">
+        <h5 class="card-title text-right mr-5">وبلاگ دیـجی فـود</h5>
+        <p class="card-text text-right mr-5">این وبلاگ برای کسب اطلاعات بیشتر در مورد غذاها ست</p>
+        <p class="card-text text-right mr-5">در اینجا غذاها بر اساس تاریخ و جغرافیای مورد بررسی قرار می گیرند</p>
+    </div>
+</div>
+<div class="bg-light">
+    <center>
+
+        <section>
+            <h3 class="text-center bg-dark text-light pb-4 pt-2">پست های ویژه</h3>
+            {% for post in posts %}
+            <div class="card" style="width: 900px">
+                <div class="row no-gutters">
+                    {% if forloop.first or forloop.last %}
+                    <div class="col-md-5">
+                        <a href="{{ post.get_absolute_url }}">
+                            <img src="{{ post.image.url }}" class="card-img" alt="..." style="height: 310px">
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="col-md-7" style="height: 310px">
+                        <div class="card-body">
+                            <div class="text-right">
+                                {% for cat in post.categories.all %}
+                                <a class="btn btn-default text-dark">{{ cat.title }}</a>
+                                {% endfor %}
+                            </div>
+                            <hr>
+                            <a class="btn btn-default" href="{{ post.get_absolute_url }}">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                            </a>
+                            <br>
+                            <p class="card-text">{{ post.text|truncatewords:30 }}</p>
+                            <hr>
+                            <div class="row justify-content-between">
+                                <p class="mt-md-3 offset-md-2"> <small class="text-muted">
+                                        {{ post.get_comments.count }}
+                                    </small>
+                                    <ion-icon name="paper"></ion-icon>
+                                </p>
+                                <p class="mt-md-3">|<small class="text-muted"> پیش </small>
+                                    <p class="card-text mt-md-3 text-right"><small class="text-muted">
+                                            {{ post.timestamp|timesince }}
+                                        </small>
+                                        <ion-icon name="time"></ion-icon>
+                                    </p>
+                                </p>
+                                <p class="mt-md-3 text-muted"> | {{ post.author.user }} </p>
+                                <div class="col-md-2">
+                                    <img class="rounded rounded-circle" src="{{ post.author.image.url }}" alt=""
+                                        style="height: 60px;width: 100%">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% if not forloop.first and not forloop.last %}
+                    <div class="col-md-5">
+                        <a href="{{ post.get_absolute_url }}">
+                            <img src="{{ post.image.url }}" class="card-img" alt="..." style="height: 310px">
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </center>
+    <br>
+    <!-- ------Latest----- -->
+    <h3 class="text-center bg-dark text-light pb-4 pt-2">جدیدترین پست ها</h3>
+    <section class="container">
+
+        <div class=" row justify-content-end">
+
+            {% for late in latest %}
+            <div class="col-md-4">
+                <div class="card" style="width: 23rem;height: 507px;">
+                    <img src="{{ late.image.url }}" class="card-img-top" alt="..." style="max-height: 230px">
+                    <div class="card-body">
+                        <div class="row justify-content-between">
+                            <p class="text-muted offset-md-1 "><small class="text-primary">{{ late.timestamp }} |
+                                </small>
+                            </p>
+                            <p class="text-muted offset-md-1">
+                                {% for cat in late.categories.all %}
+                                <small><b> | {{ cat.title }} </b></small>
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <hr>
+
+                        <h5 class="card-title text-center">{{ late.title }}</h5>
+                        <p class="card-text text-right">{{ late.text|truncatechars:120 }}</p>
+                        <a href="{{ late.get_absolute_url }}" class="btn btn-primary">بیشتر بخوانید</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <br>
+</div>
+{% endblock %}

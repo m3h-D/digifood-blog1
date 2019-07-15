@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br><br>
+<h2 class="text-right">علاقه مندیها</h2>
+{% if counter == 0 %}
+<p class=" text-right"><b>علاقه مند به محصولی نیستید ؟</b></p>
+{% else %}
+
+<br><br>
+<table class="table table-hover text-dark table-light">
+    <thead class="bg-dark text-light text-center">
+        <tr>
+            <th scope="col">کد محصول</th>
+            <th scope="col">اضافه به سبد خرید</th>
+            <th scope="col">قیمت محصول</th>
+
+            <th scope="col">حذف محصول</th>
+            <th scope="col">نام محصول</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in favorite %}
+        <tr>
+            <th scope="row">{{ item.product.id }}</th>
+            <td><a class="btn btn-warning mt-3 ml-5" href="{% url 'cart:add_to_cart' item.product.id %}"><i
+                        class="fas fa-cart-plus"></i></a></td>
+            <td> <label class="btn btn-success mt-3 ml-5">
+                    {{ item.product.price }}</label>
+            </td>
+
+            <td><a class="btn btn-danger mt-3 ml-5"
+                    href="{% url 'favorites:clear_from_favorite' item.product.id %}">حذف</a>
+            </td>
+
+            <td>
+                <center> <a class="text-dark mt-3" href="{{ item.product.get_absolute_url }}"> <label
+                            class="btn btn-outline-dark mt-3"> <b class="text">{{ item.product.title }}</b></label></a>
+                </center>
+            </td>
+            <td><a href="{{ item.product.get_absolute_url }}">
+
+                    <img class="rounded border border-secondary offset-md-3" src="{{ item.product.image.url }}" alt=""
+                        style="width: 110px; height: 80px">
+                </a>
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+</table>
+{% endif %}
+<br>
+
+
+{% endblock %}

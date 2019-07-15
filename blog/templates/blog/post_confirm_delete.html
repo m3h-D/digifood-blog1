@@ -1,0 +1,16 @@
+{% extends 'base2.html' %}
+
+
+{% block content %}
+<center>
+    <form action="." method="post">{% csrf_token %}
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading text-right">توجه !</h4>
+            <p>ایا مطمئن هستید که پست ({{ object.title }}) را می خواهید حذف کنید ؟</p>
+            <hr>
+            <input type="submit" value="حذف" class="btn btn-danger">
+        </div>
+    </form>
+</center>
+
+{% endblock %}

@@ -1,0 +1,291 @@
+{% extends 'base2.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<style>
+    .postcontent img {
+        width: 100%;
+    }
+</style>
+<div class="row mr-md-0">
+    <main class="col-lg-8 offset-md-1">
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="card" style="width: 60rem;">
+                    <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <div class="row offset-md-5">
+                            {% for cat in post.categories.all %}
+                            <p class="text-center text-muted ml-md-2"><b>| {{ cat.title }}</b></p>
+                            {% endfor %}
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            {% if request.user.is_staff %}
+                            <div class="col-md-5">
+                                <a class="btn btn-outline-danger offset-md-1" href="{{ post.get_delete_url }}"> حذف
+                                    <ion-icon name="trash">
+                                    </ion-icon>
+
+                                </a>
+                                <a class="btn btn-outline-info ml-1" href="{{ post.get_update_url }}">
+                                    ویرایش
+                                    <ion-icon name="create">
+                                    </ion-icon>
+                                </a>
+                            </div>
+                            <div class="col-md-7">
+                                <h4 class="card-title text-right">{{ post.title }}</h4>
+                            </div>
+                            {% else %}
+                            <div class="col-md-12">
+                                <h4 class="card-title text-right">{{ post.title }}</h4>
+                            </div>
+                            {% endif %}
+
+
+                        </div>
+                        <br>
+                        <hr>
+                        <div class="col-md-12">
+                            {% if messages %}
+                            {% for message in messages %}
+
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <a class="text-dark" href="{% url 'login-view' %}">
+                                    <center>
+                                        {{ message }}
+                                    </center>
+                                </a>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="row justify-content-between">
+
+                            {% if is_liked == False %}
+                            <form action="{{ post.get_like_url }}" method="post">{% csrf_token %}
+                                <button class="btn btn-outline-danger mt-md-5 ml-md-5" type="submit" name="post_id"
+                                    value="{{ post.id }}">
+                                    <ion-icon name="heart"></ion-icon><span
+                                        class="badge badge-light">{{ post.like.count }}</span>
+                                </button>
+                            </form>
+                            {% else %}
+                            <form action="{{ post.get_like_url }}" method="post">{% csrf_token %}
+                                <button class="btn btn-danger mt-md-5 ml-md-5" type="submit" name="post_id"
+                                    value="{{ post.id }}">
+                                    <ion-icon name="heart"></ion-icon><span
+                                        class="badge badge-light">{{ post.like.count }}</span>
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            <h5 class="mt-md-5 col-md-1">{{ post.get_comments.count }} <ion-icon name="paper">
+                                </ion-icon>
+                            </h5>
+                            <h5 class="mt-md-5">{{ post.view_count }} <ion-icon name="eye"></ion-icon>
+                            </h5>
+                            <h5 class="mt-md-5">{{ post.timestamp|timesince }} <ion-icon name="time"></ion-icon>
+                            </h5>
+                            <h5 class="mt-md-5">{{ post.author.user }} <ion-icon name="person"></ion-icon>
+                            </h5>
+                            <img class="rounded rounded-circle" src="{{ post.author.image.url }}" alt=""
+                                style="width: 100px;height: 100px">
+
+                        </div>
+                        <hr>
+                        <p class="card-text text-right">{{ post.text }}</p>
+                        <br>
+
+                        <div class="postcontent">
+                            {{ post.content | safe }}
+
+                        </div>
+                        <br><br><br><br>
+
+                        <h3 class="text-center bg-dark text-light" style="height: 50px;width:100%">نظرات</h3>
+                        <br>
+
+                        <div class="">
+
+                            {% for comment in post.get_comments %}
+                            {% if comment.approved_comment == False and request.user.is_staff %}
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0 mb-1 text-right"> : {{ comment.user.username }}</h5>
+
+
+                                    <div class="text-right">
+                                        <h6> {{ comment.text }}</h6>
+
+                                    </div>
+
+
+                                    <div class="text-right">
+                                        <hr>
+
+                                        {% if not comment.approved_comment %}
+                                        <a class="btn btn-outline-danger"
+                                            href="{% url 'blog:comment_remove' comment.id%}">
+                                            <ion-icon name="trash">
+                                            </ion-icon>
+
+                                        </a>
+                                        <a class="btn btn-outline-success ml-1 mr-md-5"
+                                            href="{% url 'blog:comment_approve' comment.id%}">
+                                            <ion-icon name="checkmark"></ion-icon>
+                                        </a>
+                                        {% endif %}
+
+                                        <small class="text-muted ">{{ comment.timestamp }}</small>
+
+                                    </div>
+
+                                </div>
+
+                                <img class="rounded rounded-circle ml-3" src="{{ comment.user.profile.image.url }}"
+                                    style="width: 9%;height: 80px" alt="...">
+
+                            </div>
+                            <hr>
+                            {% elif comment.approved_comment == True %}
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0 mb-1 text-right"> : {{ comment.user.username }}</h5>
+
+
+                                    <div class="text-right">
+                                        <h6> {{ comment.text }}</h6>
+
+                                    </div>
+
+
+                                    <div class="text-right">
+                                        <hr>
+
+                                        <small class="text-muted ">{{ comment.timestamp }}</small>
+
+                                    </div>
+
+                                </div>
+
+                                <img class="rounded rounded-circle ml-3" src="{{ comment.user.profile.image.url }}"
+                                    style="width: 78px;height: 80px" alt="...">
+
+                            </div>
+                            <hr>
+                            {% endif %}
+                            {% endfor %}
+                            <h4 class="text-right">نظر شما راجب این پست چیه ؟</h4>
+                            <br>
+                            {% if request.user.is_authenticated %}
+                            <form class="needs-validation" action="." method="POST" novalidate>{% csrf_token %}
+                                <div class="col-md-5 offset-md-7 ">
+                                    <textarea class="form-control text-right" id="validationTextarea"
+                                        placeholder="درباره این محصول نظر دهید" name="text" required></textarea>
+                                    <div class="invalid-feedback text-right">
+                                        ابتدا فیلد مورد نظر را پر کنید
+                                    </div>
+                                    <br>
+
+                                    <div class="offset-md-7 mt-md-2">
+                                        <button class="btn btn-primary" type="submit"> نظر دهید <ion-icon name="create">
+                                            </ion-icon></button>
+                                    </div>
+                            </form>
+                            {% else %}
+                            <p class="text-right alert alert-warning" role="alert">
+                                برای نظر دهی باید <a href="{% url 'login-view' %}">وارد</a> شوید
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <aside class="col-lg-3">
+        <!-- ------- search ----- -->
+        <br>
+        <div>
+            <label class="btn btn-light" style="width: 320px">
+                <h3 class="text-center"> جستجو در وبلاگ</h3>
+            </label>
+            <form class="form-inline" action="{% url 'blog:search' %}">
+                <button class="btn btn-light my-2 my-sm-0" type="submit">
+                    <ion-icon name="search"></ion-icon>
+                </button>
+                <input class="form-control ml-3 col-md-9" value="{{ request.GET.q }}" type="text" name="q"
+                    placeholder="جستجوی نام ، محتوی و ..." aria-label="Search">
+
+            </form>
+        </div>
+        <!-- ------- Latest posts ------- -->
+        <hr>
+        <div>
+            <label class="btn btn-light" style="width: 320px">
+                <h3 class="text-center"> اخرین پست ها </h3>
+            </label>
+            {% for post in latest %}
+            <a class="text-dark" href="{{ post.get_absolute_url }}">
+                <div class="card mb-3" style="width: 320px;height: 101px">
+                    <div class="row no-gutters">
+                        <div class="col-md-5">
+                            <img src="{{ post.image.url }}" class="card-img" alt="..."
+                                style="height: 100px;width: 133px">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ post.title|truncatewords:2 }}</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="card-text">
+                                            <ion-icon name="paper"></ion-icon>{{ post.get_comments.count }}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="card-text">
+                                            <ion-icon name="eye"></ion-icon>{{ post.view_count }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <!-- --------- categories --------- -->
+        <hr>
+        <div>
+            <label class="btn btn-light" style="width: 320px">
+                <h3 class="text-center">دسته ها</h3>
+            </label>
+
+            <div class="row">
+                <div class="col-md-1 mt-md-2">
+                    {% for cate in category_count %}
+                    <label class="btn btn-dark mt-md-2">{{ cate.categories__title__count }}</label>
+                    {% endfor %}
+                </div>
+                <div class="col-md-7 text-right">
+                    {% for cat in categories %}
+                    <a href="{% url 'blog:post_category' cat.slug %}" class="btn btn-dark mt-md-3"
+                        style="width: 290px">{{ cat.title }}</a>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+    </aside>
+</div>
+{% endblock %}

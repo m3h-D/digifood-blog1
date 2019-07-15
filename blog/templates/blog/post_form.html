@@ -1,0 +1,21 @@
+{% extends 'base2.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<div class="col-md-5 offset-md-4 mt-5 mb-5">
+    <h3 class="text-right"> {{ title }} </h3>
+    <br>
+
+    {{ form.media }}
+    <form class="text-right" action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form|crispy }}
+        <img id="id_image" src="{{ post.image.url }}" alt="" name="image">
+        <button type="submit" class="btn btn-warning">ذخیره</button>
+    </form>
+
+
+</div>
+
+{% endblock %}

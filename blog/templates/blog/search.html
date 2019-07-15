@@ -1,0 +1,162 @@
+{% extends 'base2.html' %}
+
+
+{% block content %}
+
+<div class="row mr-md-0">
+    <main class="col-lg-8">
+        <div class="container">
+            <div class="row ml-md-4">
+                <!-- -------- Post ----- -->
+                {% for post in result %}
+                <div class="col-md-6 mt-md-3">
+                    <div class="card mt-md-5" style="width:390px;height: 550px">
+                        <a class="text-dark" href="{{ post.get_absolute_url }}">
+                            <img src="{{ post.image.url }}" class="card-img-top" alt="..." style="max-height: 258px">
+                        </a>
+                        <div class="card-body">
+                            <div class="row justify-content-between">
+                                <p class="text-muted offset-md-1"><small>{{ post.timestamp }} | </small></p>
+                                <p class="text-muted offset-md-1">
+                                    {% for cat in post.categories.all %}
+                                    <small><b> | {{ cat.title }} </b></small>
+                                    {% endfor %}
+                                </p>
+                            </div>
+                            <hr>
+                            <a class="text-dark" href="{{ post.get_absolute_url }}">
+                                <h5 class="card-title text-center">{{ post.title }}</h5>
+                            </a>
+                            <p class="card-text text-center text-muted">{{ post.text|truncatewords:20 }}</p>
+                            <hr>
+                            <div class="row justify-content-between">
+                                <p class="mt-md-3 offset-md-1"> <small class="text-muted"> {{ post.get_comments.count }}
+                                    </small>
+                                    <ion-icon name="paper"></ion-icon>
+                                </p>
+                                <p class="mt-md-3"> | <small class="text-muted"> پیش </small> </p>
+                                <p class="card-text mt-md-3 text-right"> <small class="text-muted">
+                                        {{ post.timestamp|timesince }}
+                                    </small>
+                                    <ion-icon name="time"></ion-icon>
+                                </p>
+                                <p class="mt-md-3 text-muted"> | {{ post.author.user }} </p>
+                                <div class="col-md-3">
+                                    <img class="rounded rounded-circle" src="{{ post.author.image.url }}" alt=""
+                                        style="height: 60px;width: 100%">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ------------ Paginator -------- -->
+        <div class="col-md-6 offset-md-4">
+            <br>
+            {% if result.has_previous %}
+            <a class="btn btn-outline-primary mb-4" href="?page=1"><i class="fas fa-angle-double-left"></i>اولین</a>
+            <a class="btn btn-outline-primary mb-4" href="?page={{ result.previous_page_number }}">
+                <ion-icon name="arrow-dropleft"></ion-icon>قبلی
+            </a>
+            {% endif %}
+
+            {% for num in result.paginator.page_range %}
+            {% if result.number == num %}
+            <a class="btn btn-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > result.number|add:'-3' and num < result.number|add:'3' %}
+            <a class="btn btn-outline-secondary mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+            {% endfor %}
+
+            {% if result.has_next %}
+            <a class="btn btn-outline-primary mb-4" href="?page={{ result.next_page_number }}">
+                <ion-icon name="arrow-dropright"></ion-icon>بعدی
+            </a>
+            <a class="btn btn-outline-primary mb-4" href="?page={{ result.paginator.num_pages }}"><i
+                    class="fas fa-angle-double-right"></i>اخرین</a>
+            {% endif %}
+        </div>
+
+    </main>
+    <aside class="col-lg-3">
+        <!-- ------- search ----- -->
+        <br>
+        <div>
+            <label class="btn btn-light" style="width: 84%">
+                <h3 class="text-center"> جستجو در وبلاگ</h3>
+            </label>
+            <form class="form-inline" action="{% url 'blog:search' %}">
+                <button class="btn btn-light my-2 my-sm-0 offset-md-1" type="submit">
+                    <ion-icon name="search"></ion-icon>
+                </button>
+                <input class="form-control mr-sm-2" value="{{ request.GET.q }}" type="text" name="q"
+                    placeholder="جستجوی نام ، محتوی و ..." aria-label="Search">
+
+            </form>
+        </div>
+        <!-- ------- Latest posts ------- -->
+        <hr>
+        <div>
+            <label class="btn btn-light" style="width: 84%">
+                <h3 class="text-center"> اخرین پست ها </h3>
+            </label>
+            {% for post in latest %}
+            <a class="text-dark" href="{{ post.get_absolute_url }}">
+                <div class="card mb-3" style="max-width: 320px;height: 101px">
+                    <div class="row no-gutters">
+                        <div class="col-md-5">
+                            <img src="{{ post.image.url }}" class="card-img" alt="..." style="height: 100px">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ post.title }}</h5>
+                                <div class="row">
+                                    <p class="card-text offset-md-1">
+                                        <ion-icon name="paper"></ion-icon>{{ post.get_comments.count }}
+                                    </p>
+                                    <p class="card-text offset-md-3">
+                                        <ion-icon name="eye"></ion-icon>{{ post.view_count }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <!-- --------- categories --------- -->
+        <hr>
+        <div>
+            <label class="btn btn-light" style="width: 84%">
+                <h3 class="text-center">دسته ها</h3>
+            </label>
+            {% for cat in category_count %}
+            <div class="row">
+
+                <table class="table table-hover table-dark ml-md-3" style="width: 77%">
+                    <tbody>
+                        <tr>
+
+                            <td>
+                                <p class="offset-md-1">{{ cat.categories__title__count }}</p>
+                            </td>
+                            <td> <a class="offset-md-6 text-light" href="">
+                                    {{ cat.categories__title }}
+                                </a></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            {% endfor %}
+        </div>
+    </aside>
+</div>
+
+
+{% endblock%}

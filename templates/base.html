@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <!-- Required meta tags -->
+    <style>
+        .scrollbar-ripe-malinka::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+            background-color: #F5F5F5;
+            border-radius: 10px;
+        }
+
+        .scrollbar-ripe-malinka::-webkit-scrollbar {
+            width: 15px;
+            background-color: #F5F5F5;
+        }
+
+        .scrollbar-ripe-malinka::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+            background-image: -webkit-linear-gradient(330deg, #f5d440 0%, #f5576c 100%);
+            background-image: linear-gradient(120deg, #f5d440 0%, #f5576c 100%);
+        }
+
+
+        .square::-webkit-scrollbar-track {
+            border-radius: 0 !important;
+        }
+
+        .square::-webkit-scrollbar-thumb {
+            border-radius: 0 !important;
+        }
+
+        .thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .example-1 {
+            position: relative;
+            overflow-y: scroll;
+            height: 150px;
+        }
+
+        /* div.shortertext {
+
+            width: 500px; */
+        /* margin: 0 0 1em 0; */
+        /* overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            margin-left: 0px;
+            margin-bottom: 1em;
+        } */
+
+        .bg {
+            /* The image used */
+            background-image: url("https://image.freepik.com/free-vector/blackboard-food-background_23-2148050053.jpg");
+
+            /* Full height */
+            height: 100px;
+
+            /* Center and scale the image nicely */
+            /* background-position: center; */
+            /* background-repeat: no-repeat; */
+            /* background-size: cover; */
+        }
+
+        /* .modal-backdrop {
+            position: unset !important;
+        } */
+
+
+        h3 {
+            position: relative;
+            right: 300%;
+            top: 6px;
+        }
+
+        h4 {
+            position: relative;
+            right: 500px;
+            top: 100px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script $(function () { $('.example-popover').popover({ container: 'body' }) })></script>
+    <script $('#exampleModalCenter').on('shown.bs.modal', function () { $('#myInput').trigger('focus') })></script>
+
+    <script $(function () { $('[data-toggle="tooltip" ]').tooltip() })></script>
+
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+    <title> DigiFood </title>
+</head>
+
+<body>
+    <!-- Image and text -->
+
+
+
+    <header class="header" style="max-height: 300px; width:100%">
+        <div class="bg">
+            <div class="row" style="width:100%">
+                <div class="col-md-6 offset-md-3 mt-md-4">
+                    <form class="form-inline" method="GET" action="{% url 'products:search' %}">
+                        <button class="btn btn-danger my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+                        <input class="form-control mr-sm-2 text-right" type="search" name="q" placeholder="جستجو"
+                            value="{{ request.GET.q }}" aria-label="Search" style="width:90%">
+                    </form>
+                </div>
+
+                <div class="col-md-3 mt-md-1 mb-md-1">
+                    <a class=" navbar-brand text-warning" href="{% url 'pages:home-page' %}">
+
+                        DigiFood
+
+                        <img src="{% static 'img/logo.png' %}" width="70" height="60" class="d-inline-block align-top"
+                            alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+
+    </header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                {% url 'pages:home-page' as home %}
+                {% url 'products:product_list' as liste %}
+                {% url 'pages:contact-view' as contact %}
+                {% url 'blog:blog_view' as blog %}
+                {% url 'profile-view' as profiles %}
+
+                {% if user.is_authenticated %}
+                <div class="col-md-3 offset-md-2">
+                    <li class="nav-item dropdown mega-dropdown {% if request.path == profiles%} active {% endif %}">
+                        <a class="nav-link dropdown-toggle text-uppercase " href="{% url 'profile-view' %}"
+                            id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">پنل کاربر <i
+                                class="fas fa-user-tie"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color:#343a4005">
+                            <div class="card text-light" style="width: 13rem;background-color:#343a40ea">
+                                <center>
+                                    <img src="{{ user.profile.image.url }}"
+                                        class="card-img-top rounded-circle border border-warning"
+                                        alt="user profile picture" style="width:60%; height:120px">
+                                </center>
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">{{ user.first_name }} {{ user.last_name }}</h5>
+
+                                    <p class="card-text text-center">{{ user.profile.bio }}</p>
+
+                                    {% if user.is_superuser %}
+                                    <a href="/admin/" class="btn btn-outline-success ml-3 mt-1" style="width:80%">پنل
+                                        ادمین</a>
+                                    {% endif %}
+                                    <a class="btn btn-outline-warning ml-3 mt-1" style="width:80%"
+                                        href="{% url 'edit-profile-view' %}">تغییر
+                                        مشخصات</a>
+
+                                    <a class="btn btn-outline-warning ml-3 mt-1" style="width:80%"
+                                        href="{% url 'logout-view' %}">خروج از
+                                        سیستم</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </div>
+
+
+
+
+                {% else %}
+                <div class="col-md-3 offset-md-2">
+                    <a class="nav-item nav-link" data-toggle="modal" data-target="#exampleModalCenter">ورود/ثبت نام <i
+                            class="fas fa-user-tie"></i></a>
+                </div>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class=" modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content shadow-lg">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">ورود/ثبت نام</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <form class="px-4 py-3 shadow-sm p-4 mb-md-4 bg-white" method="POST"
+                                    action="{% url 'login-view' %}">{% csrf_token %}
+                                    <div class="form-group text-right">
+                                        <label for="id_username">نام کاربری / ایمیل</label>
+                                        <input type="text" class="form-control text-right" id="id_username"
+                                            name="username" placeholder="Mamad">
+                                    </div>
+                                    <div class="form-group text-right">
+                                        <label for="id_password">رمز عبور</label>
+                                        <input type="password" class="form-control text-right" id="id_password"
+                                            name="password" placeholder="Password">
+                                    </div>
+                                    <div class="form-group ">
+                                        <!-- <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                            <label class="form-check-label" for="dropdownCheck">
+                                                Remember me
+                                            </label>
+                                        </div> -->
+                                    </div>
+                                    <div class="col-md-3 offset-md-10">
+                                        <button type="submit" class="btn btn-primary text-right">ورود</button>
+                                        <input type="hidden" name="next" value="{{ next }}">
+                                    </div>
+                                </form>
+                                <div class="dropdown-divider "></div>
+                                <a class="dropdown-item shadow-sm p-4 mb-md-4 bg-white text-right"
+                                    href="{% url 'register-view' %}">
+                                    ثبت نام</a>
+                                <a class="dropdown-item shadow-sm p-4 mb-md-4 bg-white text-right"
+                                    href="{% url 'password_reset' %}">رمز خود را فراموش کرده
+                                    اید؟</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                {% endif %}
+
+                <div class="col-md-3 offset-md-5">
+                    <li {% if request.path == contact %} class="nav-item  active " {% endif %}>
+                        <a class="nav-link" href="{% url 'pages:contact-view' %}">ارتباط باما <i
+                                class="far fa-id-card"></i><span class="sr-only">(current)</span></a>
+                    </li>
+                </div>
+
+                <div class="col-md-2">
+
+                    <li {% if request.path == blog %} class="nav-item dropdown  active " {% endif %}
+                        data-event-lable="وبلاگ">
+                        <a class="nav-link " href="{% url 'blog:blog_view' %}" role="link">
+                            وبلاگ <i class="fas fa-blog"></i>
+                        </a>
+
+
+                    </li>
+                    </li>
+
+                </div>
+
+                <center>
+                    <ul class="navbar-nav text-left">
+
+                        <li class="nav-item dropdown {% if request.path == liste %} active {% endif %}">
+                            <a class="nav-link dropdown-toggle" href="{% url 'products:product_list' %}"
+                                id="navbarDropdown" aria-haspopup="true" aria-expanded="false">
+                                فهرست
+                                <i class="fas fa-th-list"></i></a>
+                            <h3>
+
+
+
+                                <div class="dropdown-menu mega-menu py-5 px-3 "
+                                    aria-labelledby="navbarDropdownMenuLink4"
+                                    style="width: 700%;background-color:#343a40e8">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-3">
+
+                                                <a href="/product/category/salad-drink/"
+                                                    class="sub-title text-uppercase font-weight-bold text-white">
+                                                    نوشیدنی و سالاد</a>
+                                                <hr>
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <a class="menu-item pl-0 text-white" href="#!">
+                                                            <i class="fas fa-caret-right pl-1 pr-3 "></i>
+                                                            نوشابه
+                                                        </a>
+                                                    </li>
+                                                    <br>
+                                                    <li>
+                                                        <a class="menu-item pl-0 text-white" href="#!">
+                                                            <i class="fas fa-caret-right pl-1 pr-3"></i>سالاد
+                                                        </a>
+                                                    </li>
+                                                    <br>
+                                                    <li>
+                                                        <a class="menu-item pl-0 text-white" href="#!">
+                                                            <i class="fas fa-caret-right pl-1 pr-3"></i>سیب
+                                                            زمینی
+                                                        </a>
+                                                    </li>
+                                                    <br>
+                                                    <li>
+                                                        <a class="menu-item pl-0 text-white" href="#!">
+                                                            <i class="fas fa-caret-right pl-1 pr-3"></i>دسر
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-md-3 text-center">
+
+
+
+                                                <a href="/product/category/persian/" class="btn btn-outline-warning"
+                                                    role="button" aria-pressed="true">غذای ایرانی</a>
+
+
+
+                                                <hr>
+                                                <!--Featured image-->
+                                                <a href="#!" class="view overlay z-depth-1 p-0 mb-2">
+                                                    <img src="{% static 'img/persian.jpg' %} " class="img-fluid"
+                                                        alt="First sample image" style="height:120px">
+                                                    <div class="mask rgba-white-slight"></div>
+                                                </a>
+                                                <a class="news-title font-weight-bold pl-0 text-white" href="#!"></a>
+                                                <p class="font-small text-uppercase text-white">
+                                                    غذای ایرانی با بهترین کیفیت
+                                                </p>
+                                            </div>
+                                            <div class="col-md-3 text-center">
+                                                <a href="/product/category/western/" class="btn btn-outline-warning"
+                                                    role="button" aria-pressed="true">غذای وسترن</a>
+                                                <hr>
+                                                <!--Featured image-->
+                                                <a href="#!" class="view overlay z-depth-1 p-0 mb-2">
+                                                    <img src="{% static 'img/west.jpg' %}" class="img-fluid"
+                                                        alt="First sample image" style="height:120px">
+                                                    <div class="mask rgba-white-slight"></div>
+                                                </a>
+                                                <a class="news-title font-weight-bold pl-0 text-white" href="#!"></a>
+                                                <p class="font-small text-uppercase text-white">
+                                                    <i class="fas fa-clock-o pr-2" aria-hidden="true"></i>
+
+                                                    انواع فست فود با بهترین کیفیت
+                                                </p>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                                <a href="/product/category/shirini-cake/"
+                                                    class="sub-title text-uppercase font-weight-bold text-white text-right">
+                                                    بیسکویت و کیک</a>
+                                                <hr>
+
+                                                <ul class="list-unstyled text-right">
+                                                    <li>
+                                                        <a class="menu-item pl-0 text-white " href="#!">
+                                                            کیک
+                                                            تولد
+                                                            <i class="fas fa-caret-left pl-1 pr-3"></i>
+                                                        </a>
+                                                    </li>
+                                                    <br>
+                                                    <li>
+                                                        <a class="menu-item pl-0 text-white" href="#!">
+                                                            نان <i class="fas fa-caret-left pl-1 pr-3"></i>
+                                                        </a>
+                                                    </li>
+                                                    <br>
+                                                    <li>
+                                                        <a class="menu-item pl-0 text-white" href="#!">
+                                                            کلوچه <i class="fas fa-caret-left pl-1 pr-3"></i>
+                                                        </a>
+                                                    </li>
+                                                    <br>
+                                                    <li>
+                                                        <a class="menu-item pl-0 text-white" href="#!">
+                                                            بیسکویت <i class="fas fa-caret-left pl-1 pr-3"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </h3>
+                        </li>
+                    </ul>
+                </center>
+
+                <div class="col-md-2 offset-md-1">
+                    <li {% if request.path == home %} class="nav-item  active " {% endif %}>
+                        <a class="nav-link" href="{% url 'pages:home-page' %}">خانه <i class="fas fa-home"></i><span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                </div>
+                <div class="col-md-1">
+                    <a class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="علاقه مندی ها"
+                        href="{% url 'favorites:favorite_view' %}"><i class="fas fa-heart"></i></a>
+                </div>
+                <div class="col-md-1">
+
+                    <a href="{% url 'cart:cart' %}">
+                        <button type="button" class="btn btn-danger text-right" data-toggle="tooltip"
+                            data-placement="bottom" title="سبد خرید" style="width: 70px">
+                            <i class="fas fa-cart-arrow-down"></i>
+                            <span class="badge badge-light text-left">{{ cart.count }}</span>
+
+                        </button>
+                    </a>
+                </div>
+        </div>
+        </ul>
+    </nav>
+
+
+
+    <div class="container">
+        {% block contact %}
+        {% endblock %}
+    </div>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <div class="container">
+        {% block jumpbotrun %}
+        {% endblock %}
+    </div>
+
+    {% block list %}
+    {% endblock %}
+
+    {% block slid %}
+    {% endblock %}
+
+    <div class="container">
+        {% block detail %}
+        {% endblock %}
+    </div>
+
+    <div class="container">
+        {% block cart %}
+        {% endblock %}
+
+    </div>
+
+    {% block new %}
+    {% endblock %}
+
+    <br>
+    <a class="btn btn-dark mb-4 pb-3 text-white fixed-bottom offset-md-10" style="width: 200px; margin-left: 1315px">
+        سفارش تلفنی <i class="fas fa-phone mr-3"></i></a>
+    <a class="btn btn-dark text-white fixed-bottom offset-md-10 bg-gradient-primary"
+        style="width: 200px; margin-left: 1315px">
+        021-123456789</a>
+    <!-- Footer -->
+    <footer class="page-footer font-small bg-dark text-white lighten-3 pt-4">
+
+        <!-- Footer Links -->
+        <div class="container text-center text-md-left">
+
+            <!-- Grid row -->
+            <div class="row">
+
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 text-center mx-auto my-4">
+
+                    <!-- Social buttons -->
+                    <h5 class="font-weight-bold text-uppercase mb-4">ما رادنبال کنید</h5>
+
+
+                    <ul>
+
+                        <li>
+                            <a type=" button" href="https://www.instagram.com/foodlovers_egypt/"
+                                class="btn btn-outline-warning">
+                                <i class="fab fa-instagram" style="width:30px; height:20px;"></i>
+                            </a>
+                        </li>
+                        <!-- Twitter -->
+                        <li>
+                            <a type=" button" class="btn btn-outline-primary">
+                                <i class="fab fa-telegram-plane" style="width:30px; height:20px;"></i>
+                            </a>
+                        </li>
+                        <!-- Google +-->
+                        <li>
+                            <a type=" button" class="btn btn-outline-danger">
+                                <i class="fab fa-google-plus-g" style="width:30px; height:20px;"></i>
+                            </a>
+                        </li>
+                        <!-- Dribbble -->
+                        <li>
+                            <a type=" button" class="btn btn-outline-info">
+                                <i class="fab fa-facebook-square" style="width:30px; height:20px;"></i>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+                <!-- Grid column -->
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 mx-auto my-md-4 my-0 mt-4 mb-1">
+
+                    <!-- Links -->
+                    <h5 class="font-weight-bold text-uppercase mb-4">تایید شده توسط</h5>
+
+                    <ul class="list-unstyled text-right">
+                        <li>
+                            <p>
+                                <a class="text-white" href="#!">سازمان غذاو دارو</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a class="text-white" href="#!">سازمان بهداشت و درمان</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a class="text-white" href="#!">دارای نشان اعتماد</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a class="text-white" href="#!">دارای نشان سلامت غذایی</a>
+                            </p>
+                        </li>
+                    </ul>
+
+                </div>
+                <!-- Grid column -->
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
+
+                    <!-- Contact details -->
+                    <h5 class="font-weight-bold text-uppercase mb-4">راه های تماس با ما</h5>
+
+                    <ul class="list-unstyled">
+                        <li>
+                            <p>
+                                <i class="fas fa-home mr-3 text-right"></i> دفتر مرکزی: تهران-کوچه 1-پلاک 1</p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fas fa-envelope mr-3"></i> lordofhell225@gmail.com</p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fas fa-phone mr-3"></i> +98 21 565 88 34</p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fas fa-phone mr-3"></i> +98 912 364 34 43 </p>
+                        </li>
+                    </ul>
+
+                </div>
+                <!-- Grid column -->
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <!-- Grid column -->
+
+                <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+
+                    <!-- Content -->
+                    <h5 class="font-weight-bold text-uppercase mb-4 text-center">درباره ما</h5>
+                    <p class="text-center"> سایت دیجی فود یک سایت تهیه انواع غذا و خوراکی است </p>
+                    <p class="text-center">محصولات ما با بهترین کیفیت و سریع ترین زمان ممکن به دست شما مشتریان عزیز
+                        خواهد
+                        رسید.
+                        نحوه ی کار ما به این صورت است که سفارشات شما عزیزان توسط نزدیک ترین فروشگاه تهیه شده و در کمترین
+                        زمان به دست شما عزیزان خواهد رسید.
+                    </p>
+
+                </div>
+
+
+                <!-- Grid column -->
+
+            </div>
+            <!-- Grid row -->
+
+        </div>
+        <!-- Footer Links -->
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">© 2019 Copyright:
+            <a class="text-white" href="{% url 'pages:home-page' %}"> DigiFood.ir</a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- <script $('#exampleModalCenter').modal({ focus: true })></script> -->
+    <script>$(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })</script>
+</body>
+
+</html>

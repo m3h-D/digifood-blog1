@@ -1,0 +1,421 @@
+<!doctype html>
+{% load staticfiles %}
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fa" lang="fa">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>دیجی فود | وبلاگ</title>
+
+    <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+
+        .fixed-home-bg {
+            background-image: url("https://images.unsplash.com/photo-1543393786-6b9844cc148d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80");
+            height: 700px;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            background-color: #343a408c;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ------NavBar----- -->
+    {% url 'blog:blog_view' as home %}
+    {% url 'blog:post_list' as list %}
+    {% url 'blog:post_create' as create %}
+
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark  bg-dark">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- <div class="container"> -->
+
+        <div class="col-md-2">
+            <a class="navbar-brand" href="{% url 'blog:blog_view'%}">DigiFood Blog</a>
+        </div>
+
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <div class="row justify-content-start">
+                <ul class="navbar-nav mt-2 mt-lg-0 ">
+
+
+
+
+                    <div>
+                        <a class="nav-item nav-link" data-toggle="modal" data-target="#exampleModalCenter1">
+                            <ion-icon name="search" style="height: 25px;width: 30px"></ion-icon><i
+                                class="fas fa-user-tie"></i>
+                        </a>
+                    </div>
+                    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+                        <div class=" modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content" style="background-color: #343a4041;">
+                                <div class="header">
+                                    <h5 class="modal-title text-center text-light" id="exampleModalCenterTitle1">
+                                        دنبال چی می گردی ؟</h5>
+                                    <button type="button" class="close text-light mr-2 mt-0" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body pl-5 pr-5">
+
+                                    <form class="form-inline" action="{% url 'blog:search' %}">
+
+                                        <input class="form-control col-md-10 text-right text-light"
+                                            value="{{ request.GET.q }}" type="text" name="q" placeholder="جستجو"
+                                            aria-label="Search" style="background-color: #343a40b7;">
+                                        <button class="btn btn-defualt" type="submit">
+                                            <ion-icon class="text-light" name="search" style="height: 25px;width: 30px">
+                                            </ion-icon>
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    {% if request.user.is_staff %}
+                    <div class="col-md-3 offset-md-4">
+                        <li {% if request.path == create %} class="nav-item text-center active" {% endif %}>
+                            <a class="nav-link" href="{% url 'blog:post_create'%}">پست جدید <ion-icon
+                                    name="paper-plane">
+                                </ion-icon></a>
+                        </li>
+                    </div>
+                    {% else %}
+                    <div class="col-md-10">
+
+                    </div>
+                    {% endif %}
+
+
+                    {% if user.is_authenticated %}
+                    <div class="col-md-4 text-center">
+                        <li class="nav-item dropdown mega-dropdown">
+                            <a class="nav-link dropdown-toggle text-center" href="{% url 'profile-view' %}"
+                                id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">پنل کاربر
+                                <ion-icon name="finger-print"></ion-icon><i class="fas fa-user-tie"></i></a>
+                            <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+                                <div class="card bg-dark text-light" style="width: 13rem;">
+                                    <center>
+                                        <img src="{{ user.profile.image.url }}"
+                                            class="card-img-top rounded-circle border border-warning"
+                                            alt="user profile picture" style="width:60%; height:120px">
+                                    </center>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">{{ user.first_name }}
+                                            {{ user.last_name }}
+                                        </h5>
+
+                                        <p class="card-text text-center">{{ user.profile.bio }}</p>
+
+                                        {% if user.is_superuser %}
+                                        <a href="/admin/" class="btn btn-outline-success ml-3 mt-1"
+                                            style="width:80%">پنل
+                                            ادمین</a>
+                                        {% endif %}
+                                        <a class="btn btn-outline-warning ml-3 mt-1" style="width:80%"
+                                            href="{% url 'edit-profile-view' %}">تغییر
+                                            مشخصات</a>
+
+                                        <a class="btn btn-outline-warning ml-3 mt-1" style="width:80%"
+                                            href="{% url 'logout-view' %}">خروج از
+                                            سیستم</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+
+
+
+
+
+                    {% else %}
+                    <div class="col-md-4 text-center">
+                        <a class="nav-item nav-link" data-toggle="modal" data-target="#exampleModalCenter">ورود/ثبت
+                            نام
+                            <ion-icon name="finger-print"></ion-icon><i class="fas fa-user-tie"></i></a>
+                    </div>
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class=" modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content shadow-lg">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">ورود/ثبت نام</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form class="px-4 py-3 shadow-sm p-4 mb-md-4 bg-white" method="POST"
+                                        action="{% url 'login-view' %}">{% csrf_token %}
+                                        <div class="form-group text-right">
+                                            <label for="id_username">نام کاربری / ایمیل</label>
+                                            <input type="text" class="form-control text-right" id="id_username"
+                                                name="username" placeholder="Mamad">
+                                        </div>
+                                        <div class="form-group text-right">
+                                            <label for="id_password">رمز عبور</label>
+                                            <input type="password" class="form-control text-right" id="id_password"
+                                                name="password" placeholder="Password">
+                                        </div>
+                                        <div class="form-group ">
+                                            <!-- <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                                <label class="form-check-label" for="dropdownCheck">
+                                                    Remember me
+                                                </label>
+                                            </div> -->
+                                        </div>
+                                        <div class="col-md-3 offset-md-10">
+                                            <button type="submit" class="btn btn-primary text-right">ورود</button>
+                                        </div>
+                                    </form>
+                                    <div class="dropdown-divider "></div>
+                                    <a class="dropdown-item shadow-sm p-4 mb-md-4 bg-white text-right"
+                                        href="{% url 'register-view' %}">
+                                        ثبت نام</a>
+                                    <a class="dropdown-item shadow-sm p-4 mb-md-4 bg-white text-right"
+                                        href="{% url 'password_reset' %}">رمز خود را فراموش کرده
+                                        اید؟</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {% endif %}
+                    <div class="col-md-4">
+                        <li class="nav-item text-center">
+                            <a class="nav-link" href="{% url 'pages:home-page' %}">فروشگاه <ion-icon name="appstore">
+                                </ion-icon>
+                                <span class="sr-only">(current)</span> </a>
+                        </li>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <li {% if request.path == list %} class="nav-item  active text-center" {% endif %}>
+                            <a class="nav-link" href="{% url 'blog:post_list' %}">پست ها <ion-icon name="list-box">
+                                </ion-icon>
+                            </a>
+                        </li>
+                    </div>
+                    <div class="col-md-3">
+                        <li {% if request.path == home %} class="nav-item active text-center" {% endif %}>
+                            <a class="nav-link" href="{% url 'blog:blog_view'%}" tabindex="-1" aria-disabled="true">خانه
+                                <ion-icon name="home"></ion-icon></a>
+                        </li>
+                    </div>
+
+                </ul>
+            </div>
+        </div>
+        <!-- </div> -->
+
+    </nav>
+
+
+    {% block content %}
+    {% endblock %}
+    <div class="container">
+
+        {% block jump %}
+        {% endblock %}
+
+    </div>
+
+
+    <br>
+
+
+    <!-- Footer -->
+    <footer class="page-footer font-small bg-dark text-white lighten-3 pt-4">
+
+        <!-- Footer Links -->
+        <div class="container text-center text-md-left">
+
+            <!-- Grid row -->
+            <div class="row">
+
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 text-center mx-auto my-4">
+
+                    <!-- Social buttons -->
+                    <h5 class="font-weight-bold text-uppercase mb-4">ما رادنبال کنید</h5>
+
+
+                    <ul>
+
+                        <li>
+                            <a type=" button" href="https://www.instagram.com/foodlovers_egypt/"
+                                class="btn btn-outline-warning mb-1">
+                                <ion-icon class="mt-1" name="logo-instagram" style="width:35px;height:20px;"></ion-icon>
+                            </a>
+                        </li>
+                        <!-- Twitter -->
+                        <li>
+                            <a type=" button" class="btn btn-outline-primary mb-1">
+                                <ion-icon class="mt-1" name="paper-plane" style="width:35px;height:20px;"></ion-icon>
+                            </a>
+                        </li>
+                        <!-- Google +-->
+                        <li>
+                            <a type=" button" class="btn btn-outline-danger mb-1">
+                                <ion-icon class="mt-1" name="logo-googleplus" style="width:35px;height:20px;">
+                                </ion-icon>
+                            </a>
+                        </li>
+                        <!-- Dribbble -->
+                        <li>
+                            <a type=" button" class="btn btn-outline-info">
+                                <ion-icon class="mt-1" name="logo-facebook" style="width:35px;height:20px;"></ion-icon>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+                <!-- Grid column -->
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 mx-auto my-md-4 my-0 mt-4 mb-1">
+
+                    <!-- Links -->
+                    <h5 class="font-weight-bold text-uppercase mb-4">تایید شده توسط</h5>
+
+                    <ul class="list-unstyled text-right">
+                        <li>
+                            <p>
+                                <a class="text-white" href="#!">سازمان غذاو دارو</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a class="text-white" href="#!">سازمان بهداشت و درمان</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a class="text-white" href="#!">دارای نشان اعتماد</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a class="text-white" href="#!">دارای نشان سلامت غذایی</a>
+                            </p>
+                        </li>
+                    </ul>
+
+                </div>
+                <!-- Grid column -->
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
+
+                    <!-- Contact details -->
+                    <h5 class="font-weight-bold text-uppercase mb-4">راه های تماس با ما</h5>
+
+                    <ul class="list-unstyled">
+                        <li>
+                            <p>
+                                <i class="fas fa-home mr-3 text-right"></i> دفتر مرکزی: تهران-کوچه 1-پلاک 1</p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fas fa-envelope mr-3"></i> lordofhell225@gmail.com</p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fas fa-phone mr-3"></i> +98 21 565 88 34</p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fas fa-phone mr-3"></i> +98 912 364 34 43 </p>
+                        </li>
+                    </ul>
+
+                </div>
+                <!-- Grid column -->
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <!-- Grid column -->
+
+                <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+
+                    <!-- Content -->
+                    <h5 class="font-weight-bold text-uppercase mb-4 text-center">درباره ما</h5>
+                    <p class="text-center"> سایت دیجی فود یک سایت تهیه انواع غذا و خوراکی است </p>
+                    <p class="text-center">محصولات ما با بهترین کیفیت و سریع ترین زمان ممکن به دست شما مشتریان عزیز
+                        خواهد
+                        رسید.
+                        نحوه ی کار ما به این صورت است که سفارشات شما عزیزان توسط نزدیک ترین فروشگاه تهیه شده و در کمترین
+                        زمان به دست شما عزیزان خواهد رسید.
+                    </p>
+
+                </div>
+
+
+                <!-- Grid column -->
+
+            </div>
+            <!-- Grid row -->
+
+        </div>
+        <!-- Footer Links -->
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">© 2019 Copyright:
+            <a class="text-white" href="{% url 'pages:home-page' %}"> DigiFood.ir</a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
+</body>
+
+</html>

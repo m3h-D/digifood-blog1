@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<br>
+<div class="col-md-12">
+    {% if messages %}
+    {% for message in messages %}
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <center>
+            {{ message }}
+        </center>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+<h2 class="text-center"> پنل کاربری</h2>
+<br>
+<center>
+    <div class="card mb-3 text-white bg-dark" style="max-width: 540%;height: 550px;">
+        <div class="row no-gutters">
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{user.username}}</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3 offset-md-6">
+                            <p class="card-text text-right">{{ user.first_name }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="card-text text-right">: نام </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3 offset-md-6">
+                            <p class="card-text text-right">{{ user.last_name }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="card-text text-right">: نام خانوادگی </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4 offset-md-5">
+                            <p class="card-text text-right">{{ user.email }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="card-text text-right">: ایمیل </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3 offset-md-6">
+                            <p class="card-text text-right">{{ user.profile.bio }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="card-text text-right">: بیو </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3 offset-md-6">
+                            <p class="card-text text-right">{{ user.profile.city }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="card-text text-right">: شهر </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3 offset-md-6">
+                            <p class="card-text text-right">{{ user.profile.address }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="card-text text-right">: آدرس </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3 offset-md-6">
+                            <p class="card-text text-right">{{ user.profile.phone }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="card-text text-right">: شماره تماس </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3 offset-md-6">
+                            <p class="card-text text-right">{{ user.profile.post_code }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="card-text text-right">: کد پستی </p>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- <p class="card-text text-right">  : {{ user.last_name }}</p>
+                    <p class="card-text text-right">{{ user.email }} :  </p>
+                    <p class="card-text text-right">  : {{ user.profile.bio }}</p>
+                    <p class="card-text text-right">  : {{ user.profile.city }}</p>
+                    <p class="card-text text-right">  : {{ user.profile.address }}</p>
+                    <p class="card-text text-right">  : {{ user.profile.phone }}</p>
+                    <p class="card-text text-right">  : </p> -->
+                    <div class="row justify-content-between">
+                        <div class="col-md-8">
+                            <p class="text-center">
+                                <div class="btn-group-toggle mb-md-1 ">
+                                    <label class="btn btn-outline-primary text-light">
+                                        {{user.last_login}}
+                                </div>
+
+
+                        </div>
+                        <p class="text-right"> : زمان اخرین بار ورود شما به سیستم</p>
+                    </div>
+                    <p class="card-text text-right"><small class="text"> برای تغییر مشخصات <a
+                                href="{% url 'edit-profile-view' %}">ایـنجا</a> را کلیک کنید </small></p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-4">
+                <img src="{{ user.profile.image.url }}" class="rounded-circle border border-warning" alt="..."
+                    style="width: 130%; height: 500px;">
+            </div>
+        </div>
+    </div>
+</center>
+
+{% endblock %}
